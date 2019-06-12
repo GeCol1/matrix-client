@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/valyala/fastjson"
 	"gopkg.in/resty.v1"
 )
 
@@ -25,7 +26,16 @@ func main() {
 
 func readLatestMessages(token string) {
 	respMsg, err := resty.R().Get("https://matrix.fuz.re/_matrix/client/api/v1/rooms/!lCdApgaICssmlPaSnq:matrix.fuz.re/messages?access_token=" + token + "&from=END&dir=b&limit=10")
-	fmt.Println(respMsg, err)
+	checkErr(err, "Could not get the messages from matrix API")
+	fmt.Printf("%s\n\n---------------\n", respMsg)
+
+	var p fastjson.Parser
+	m, err := p.Parse(string(respMsg.Body()))
+	checkErr(err, "Could not decode json of messages")
+	vals := m.GetArray("chunk")
+	for _, val := range vals {
+		fmt.Printf("  (%s) > %s\n", val.GetStringBytes("sender"), val.GetStringBytes("content", "body"))
+	}
 
 }
 
