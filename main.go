@@ -9,25 +9,23 @@ import (
 	"gopkg.in/resty.v1"
 )
 
-type AuthSuccess struct {
-}
-
 type loginResponse struct {
-	Access_token string
-	Home_server  string
-	User_id      string
-	Device_id    string
+	AccessToken string `json:"Access_token"`
+	HomeServer  string `json:"Home_server"`
+	UserID      string `json:"User_Id"`
+	DeviceID    string `json:"Device_id"`
 }
 
 func main() {
+	// put your user here
 	token := getToken("geco")
 
-	respMsg, err := resty.R().Get("https://matrix.fuz.re/_matrix/client/api/v1/rooms/!lCdApgaICssmlPaSnq:matrix.fuz.re/messages?access_token=" + token + "&from=END&dir=b&limit=10")
-	fmt.Println(respMsg, err)
-
+	readLatestMessages(token)
 }
 
-func readLatestMessages() {
+func readLatestMessages(token string) {
+	respMsg, err := resty.R().Get("https://matrix.fuz.re/_matrix/client/api/v1/rooms/!lCdApgaICssmlPaSnq:matrix.fuz.re/messages?access_token=" + token + "&from=END&dir=b&limit=10")
+	fmt.Println(respMsg, err)
 
 }
 
@@ -55,7 +53,7 @@ func getToken(user string) string {
 		"password": "` + pwd + `",
 		"type": "m.login.password"
 	  }`)).
-		SetResult(&AuthSuccess{}).
+		// SetResult(&AuthSuccess{}).
 		Post("https://matrix.fuz.re/_matrix/client/r0/login")
 
 	checkErr(err, "Could not authenticate")
@@ -67,7 +65,7 @@ func getToken(user string) string {
 	checkErr(err, "Could not decode json of authentication")
 
 	// fmt.Println(lr.Access_token)
-	return lr.Access_token
+	return lr.AccessToken
 }
 
 func simpleGet() {
