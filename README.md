@@ -4,10 +4,10 @@ This project uses the [matrix](https://matrix.org/) APIs to connect to a specifi
 
 ## How to use
 If you want to use it with your own instance of riot, you have to change few things:
-    - create a file "riot.pass" with your user password
-    - change the user in the main function
-    - change the const BaseURL to point to your server
-    - change the const RoomID to point to your room
+- create a file "riot.pass" with your user password
+- change the user in the main function
+- change the const BaseURL to point to your server
+- change the const RoomID to point to your room
 
 ## Dev
 This go program is using the go modules:
