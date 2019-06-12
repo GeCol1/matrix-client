@@ -33,7 +33,7 @@ func main() {
 func readLatestMessages(token string) {
 	respMsg, err := resty.R().Get("https://" + BaseURL + "/_matrix/client/api/v1/rooms/" + RoomID + "/messages?access_token=" + token + "&from=END&dir=b&limit=10")
 	checkErr(err, "Could not get the messages from matrix API")
-	fmt.Printf("%s\n\n---------------\n", respMsg)
+	// fmt.Printf("%s\n\n---------------\n", respMsg)
 
 	var p fastjson.Parser
 	m, err := p.Parse(string(respMsg.Body()))
@@ -42,7 +42,6 @@ func readLatestMessages(token string) {
 	for _, val := range vals {
 		fmt.Printf("  (%s) > %s\n", val.GetStringBytes("sender"), val.GetStringBytes("content", "body"))
 	}
-
 }
 
 func postMessage(msg string, token string) {
@@ -73,7 +72,6 @@ func getToken(user string) string {
 		Post("https://" + BaseURL + "/_matrix/client/r0/login")
 
 	checkErr(err, "Could not authenticate")
-
 	// fmt.Println(resp, err)
 
 	var lr loginResponse
