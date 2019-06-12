@@ -17,6 +17,12 @@ type loginResponse struct {
 	DeviceID    string `json:"Device_id"`
 }
 
+// BaseURL of the matrix server
+const BaseURL = "matrix.fuz.re"
+
+// RoomID of the room to connect. You can get in the advanced parameters in the riot client.
+const RoomID = "!lCdApgaICssmlPaSnq:matrix.fuz.re"
+
 func main() {
 	// put your user here
 	token := getToken("geco")
@@ -25,7 +31,7 @@ func main() {
 }
 
 func readLatestMessages(token string) {
-	respMsg, err := resty.R().Get("https://matrix.fuz.re/_matrix/client/api/v1/rooms/!lCdApgaICssmlPaSnq:matrix.fuz.re/messages?access_token=" + token + "&from=END&dir=b&limit=10")
+	respMsg, err := resty.R().Get("https://" + BaseURL + "/_matrix/client/api/v1/rooms/" + RoomID + "/messages?access_token=" + token + "&from=END&dir=b&limit=10")
 	checkErr(err, "Could not get the messages from matrix API")
 	fmt.Printf("%s\n\n---------------\n", respMsg)
 
@@ -43,7 +49,7 @@ func postMessage(msg string, token string) {
 	respMsg, err := resty.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody([]byte(`{"msgtype":"m.text", "body":"hello from go code"}`)).
-		Post("https://matrix.fuz.re/_matrix/client/r0/rooms/!lCdApgaICssmlPaSnq:matrix.fuz.re/send/m.room.message?access_token=" + token)
+		Post("https://" + BaseURL + "/_matrix/client/r0/rooms/" + RoomID + "/send/m.room.message?access_token=" + token)
 
 	checkErr(err, "Could not post the message")
 	fmt.Println(respMsg)
@@ -64,7 +70,7 @@ func getToken(user string) string {
 		"type": "m.login.password"
 	  }`)).
 		// SetResult(&AuthSuccess{}).
-		Post("https://matrix.fuz.re/_matrix/client/r0/login")
+		Post("https://" + BaseURL + "/_matrix/client/r0/login")
 
 	checkErr(err, "Could not authenticate")
 
