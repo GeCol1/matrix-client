@@ -18,14 +18,17 @@ type loginResponse struct {
 }
 
 // BaseURL of the matrix server
-const BaseURL = "matrix.fuz.re"
+const BaseURL = "matrix.org"
 
 // RoomID of the room to connect. You can get in the advanced parameters in the riot client.
-const RoomID = "!lCdApgaICssmlPaSnq:matrix.fuz.re"
+const RoomID = "!DajZFVNUBMkZbmbogv:matrix.org"
 
 func main() {
 	// put your user here
-	token := getToken("geco")
+	token := getToken("goovy.io")
+
+	// postMessage("Un nouveau message de notre programme GO", token)
+	// postMessage("et encore un autre message", token)
 
 	readLatestMessages(token)
 }
@@ -47,7 +50,7 @@ func readLatestMessages(token string) {
 func postMessage(msg string, token string) {
 	respMsg, err := resty.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody([]byte(`{"msgtype":"m.text", "body":"hello from go code"}`)).
+		SetBody([]byte(`{"msgtype":"m.text", "body":"` + msg + `"}`)).
 		Post("https://" + BaseURL + "/_matrix/client/r0/rooms/" + RoomID + "/send/m.room.message?access_token=" + token)
 
 	checkErr(err, "Could not post the message")
