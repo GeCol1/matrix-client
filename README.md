@@ -3,6 +3,8 @@
 This project uses the [matrix](https://matrix.org/) APIs to connect to a specific room and to read and post messages.
 The swagger matrix API are [here](https://matrix.org/docs/api/).
 
+Un article en français sur [blog.goovy.io](https://blog.goovy.io/utiliser-les-apis-matrix-en-go/) explique le code.
+
 ## How to use
 If you want to use it with your own instance of riot, you have to change few things:
 - create a file "riot.pass" with your user password
